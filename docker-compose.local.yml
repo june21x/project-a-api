@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  app:
+    container_name: 'project-a-api-dev'
+    build: '.'
+    ports:
+      - '8080:8080'
+    depends_on:
+      neo4j:
+        condition: service_healthy
+
+  neo4j:
+    image: neo4j:5.9
+    container_name: 'neo4j-dev'
+    ports:
+      - 7474:7474
+      - 7687:7687
+    volumes:
+      - $HOME/neo4j/data:/data
+      - $HOME/neo4j/logs:/logs
+    env_file:
+      - ./neo4j.dev.env
+    restart: unless-stopped
+    healthcheck:
+      test: "wget http://localhost:7474 || exit 1"
+      interval: 10s
+      timeout: 10s
+      retries: 20
+      start_period: 40s

@@ -1,0 +1,334 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/ping": {
+            "get": {
+                "description": "Ping",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Health Check"
+                ],
+                "summary": "Health check",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.HealthCheckRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/players": {
+            "get": {
+                "description": "Get players",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Players"
+                ],
+                "summary": "Get players",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/player_repository.Player"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Register player",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Players"
+                ],
+                "summary": "Register player",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.RegisterPlayerReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/player_repository.Player"
+                        }
+                    }
+                }
+            }
+        },
+        "/players/{uuid}": {
+            "get": {
+                "description": "Get player",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Players"
+                ],
+                "summary": "Get player",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "uuid",
+                        "name": "uuid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/player_repository.Player"
+                        }
+                    }
+                }
+            }
+        },
+        "/world-map/areas": {
+            "get": {
+                "description": "Get areas",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Areas"
+                ],
+                "summary": "Get areas",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "radius",
+                        "name": "radius",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/world_map_repository.Area"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorRes"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create area",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Areas"
+                ],
+                "summary": "Create area",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.CreateAreaReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/world_map_repository.Area"
+                        }
+                    }
+                }
+            }
+        },
+        "/world-map/areas/{uuid}": {
+            "get": {
+                "description": "Get area",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Areas"
+                ],
+                "summary": "Get area",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "uuid",
+                        "name": "uuid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/world_map_repository.Area"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "controller.CreateAreaReq": {
+            "type": "object",
+            "required": [
+                "coordinate"
+            ],
+            "properties": {
+                "coordinate": {
+                    "$ref": "#/definitions/world_map_repository.Coordinate"
+                }
+            }
+        },
+        "controller.HealthCheckRes": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "pong"
+                }
+            }
+        },
+        "controller.RegisterPlayerReq": {
+            "type": "object",
+            "required": [
+                "email",
+                "password",
+                "playerName"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "juneeleutheria@gmail.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "Abc123_@#"
+                },
+                "playerName": {
+                    "type": "string",
+                    "example": "June Eleutheria"
+                }
+            }
+        },
+        "player_repository.Player": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "juneeleutheria@gmail.com"
+                },
+                "playerName": {
+                    "type": "string",
+                    "example": "June Eleutheria"
+                },
+                "uuid": {
+                    "type": "string",
+                    "example": "fb621679-6284-4aac-b70f-148bd3c8e1d2"
+                }
+            }
+        },
+        "util.ErrorRes": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "world_map_repository.Area": {
+            "type": "object",
+            "properties": {
+                "coordinate": {
+                    "$ref": "#/definitions/world_map_repository.Coordinate"
+                },
+                "coordinateName": {
+                    "type": "string",
+                    "example": "(1, 1)"
+                },
+                "radius": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "region": {
+                    "$ref": "#/definitions/world_map_repository.Region"
+                },
+                "uuid": {
+                    "type": "string",
+                    "example": "fb621679-6284-4aac-b70f-148bd3c8e1d2"
+                }
+            }
+        },
+        "world_map_repository.Coordinate": {
+            "type": "object",
+            "properties": {
+                "x": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "y": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "world_map_repository.Region": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "NE"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Northeast"
+                }
+            }
+        }
+    }
+}

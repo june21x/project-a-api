@@ -1,0 +1,221 @@
+definitions:
+  controller.CreateAreaReq:
+    properties:
+      coordinate:
+        $ref: '#/definitions/world_map_repository.Coordinate'
+    required:
+    - coordinate
+    type: object
+  controller.HealthCheckRes:
+    properties:
+      message:
+        example: pong
+        type: string
+    type: object
+  controller.RegisterPlayerReq:
+    properties:
+      email:
+        example: juneeleutheria@gmail.com
+        type: string
+      password:
+        example: Abc123_@#
+        type: string
+      playerName:
+        example: June Eleutheria
+        type: string
+    required:
+    - email
+    - password
+    - playerName
+    type: object
+  player_repository.Player:
+    properties:
+      email:
+        example: juneeleutheria@gmail.com
+        type: string
+      playerName:
+        example: June Eleutheria
+        type: string
+      uuid:
+        example: fb621679-6284-4aac-b70f-148bd3c8e1d2
+        type: string
+    type: object
+  util.ErrorRes:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+  world_map_repository.Area:
+    properties:
+      coordinate:
+        $ref: '#/definitions/world_map_repository.Coordinate'
+      coordinateName:
+        example: (1, 1)
+        type: string
+      radius:
+        example: 1
+        type: integer
+      region:
+        $ref: '#/definitions/world_map_repository.Region'
+      uuid:
+        example: fb621679-6284-4aac-b70f-148bd3c8e1d2
+        type: string
+    type: object
+  world_map_repository.Coordinate:
+    properties:
+      x:
+        example: 1
+        type: integer
+      "y":
+        example: 1
+        type: integer
+    type: object
+  world_map_repository.Region:
+    properties:
+      code:
+        example: NE
+        type: string
+      name:
+        example: Northeast
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /ping:
+    get:
+      consumes:
+      - application/json
+      description: Ping
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.HealthCheckRes'
+      summary: Health check
+      tags:
+      - Health Check
+  /players:
+    get:
+      description: Get players
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/player_repository.Player'
+            type: array
+      summary: Get players
+      tags:
+      - Players
+    post:
+      consumes:
+      - application/json
+      description: Register player
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.RegisterPlayerReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/player_repository.Player'
+      summary: Register player
+      tags:
+      - Players
+  /players/{uuid}:
+    get:
+      description: Get player
+      parameters:
+      - description: uuid
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/player_repository.Player'
+      summary: Get player
+      tags:
+      - Players
+  /world-map/areas:
+    get:
+      description: Get areas
+      parameters:
+      - description: radius
+        in: query
+        name: radius
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/world_map_repository.Area'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.ErrorRes'
+      summary: Get areas
+      tags:
+      - Areas
+    post:
+      consumes:
+      - application/json
+      description: Create area
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.CreateAreaReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/world_map_repository.Area'
+      summary: Create area
+      tags:
+      - Areas
+  /world-map/areas/{uuid}:
+    get:
+      description: Get area
+      parameters:
+      - description: uuid
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/world_map_repository.Area'
+      summary: Get area
+      tags:
+      - Areas
+swagger: "2.0"

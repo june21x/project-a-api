@@ -1,0 +1,6 @@
+gin_mode: debug
+
+neo_4j:
+  username: neo4j
+  password: password
+  uri: bolt://localhost

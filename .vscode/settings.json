@@ -1,0 +1,13 @@
+{
+  "material-icon-theme.files.associations": {
+    "config.go": "settings"
+  },
+  "material-icon-theme.folders.associations": {
+    "external_service": "api",
+    "internal_service": "server",
+    "route": "routes",
+    "player": "server"
+  },
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.editor.enablePreview": true
+}
