@@ -55,3 +55,5 @@ go run main.go
 The API is now run at `localhost:8080`.
 
 You can browse API documentation by Swagger at `localhost:8080/swagger/index.html`
+
+![Alt](https://repobeats.axiom.co/api/embed/ced0edc85cf355645fbebb434a461d988c9a2a31.svg "Repobeats analytics image")
